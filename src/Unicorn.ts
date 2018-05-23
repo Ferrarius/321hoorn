@@ -2,13 +2,17 @@ module MyGame {
 
 	export class Unicorn extends Phaser.Sprite {
 
-		constructor(game: Phaser.Game, x: number, y: number) {
+        level: MyGame.Level;
+
+		constructor(game: Phaser.Game, level: MyGame.Level, x: number, y: number) {
 
 			super(game, x, y, 'unicorn', 0);
 
 			this.game.physics.arcade.enableBody(this);
+            this.level = level;
+            this.body.collideWorldBounds = true;
 			
-			this.anchor.setTo(0.5, 0);
+            this.anchor.setTo(0.5, 0);
 
 			// this.animations.add('walk', [0, 1, 2, 3, 4], 10, true);
 
@@ -51,8 +55,9 @@ module MyGame {
 			}
 			else {
 				this.animations.frame = 0;
-			}
-
+            }
+            
+            this.game.physics.arcade.collide(this, this.level.parts);
 		}
 
 	}

@@ -66,7 +66,30 @@ var MyGame;
         Level.prototype.create = function () {
             this.background = this.add.sprite(0, 0, 'background');
             this.background.scale.setTo(1.5, 1.5);
-            this.unicorn = new MyGame.Unicorn(this.game, 130, 284);
+            this.parts = this.game.add.group();
+            var parts = [
+                'xxxxxxxxxxxxxxxx',
+                'x  2       x   x',
+                'x              x',
+                'x    x      x  x',
+                'x    x         x',
+                'x    x         x',
+                'x    x   5     x',
+                'x    x         x',
+                'x    x         x',
+                'x       x      x',
+                'x       x      x',
+                'xxxxxxxxxxxxxxxx',
+            ];
+            for (var i = 0; i < parts.length; i++) {
+                for (var j = 0; j < parts[i].length; j++) {
+                    if (parts[i][j] == 'x') {
+                        this.parts.add(new MyGame.Wall(this.game, 50 * j, 50 * i));
+                    }
+                }
+            }
+            this.unicorn = new MyGame.Unicorn(this.game, this, 130, 284);
+            this.game.physics.startSystem(Phaser.Physics.ARCADE);
         };
         return Level;
     }(Phaser.State));
@@ -163,13 +186,9 @@ var MyGame;
         Preloader.prototype.preload = function () {
             this.preloadBar = this.add.sprite(300, 400, 'preloadBar');
             this.load.setPreloadSprite(this.preloadBar);
-            this.load.image('titlepage', 'assets/titlepage.jpg');
-            this.load.audio('titleMusic', 'assets/title.mp3', true);
-            this.load.image('logo', 'assets/logo.png');
-            this.load.spritesheet('simon', 'assets/simon.png', 58, 96, 5);
-            this.load.image('level1', 'assets/level1.png');
             this.load.image('background', 'assets/background.jpg');
-            this.load.image('unicorn', 'assets/unicorn.png');
+            this.load.spritesheet('block', 'assets/block.png', 50, 50);
+            this.load.spritesheet('unicorn', 'assets/unicorn.png', 100, 100);
         };
         Preloader.prototype.create = function () {
             this.game.state.start('MainMenu');
@@ -182,9 +201,11 @@ var MyGame;
 (function (MyGame) {
     var Unicorn = (function (_super) {
         __extends(Unicorn, _super);
-        function Unicorn(game, x, y) {
+        function Unicorn(game, level, x, y) {
             var _this = _super.call(this, game, x, y, 'unicorn', 0) || this;
             _this.game.physics.arcade.enableBody(_this);
+            _this.level = level;
+            _this.body.collideWorldBounds = true;
             _this.anchor.setTo(0.5, 0);
             game.add.existing(_this);
             return _this;
@@ -213,9 +234,27 @@ var MyGame;
             else {
                 this.animations.frame = 0;
             }
+            this.game.physics.arcade.collide(this, this.level.parts);
         };
         return Unicorn;
     }(Phaser.Sprite));
     MyGame.Unicorn = Unicorn;
+})(MyGame || (MyGame = {}));
+var MyGame;
+(function (MyGame) {
+    var Wall = (function (_super) {
+        __extends(Wall, _super);
+        function Wall(game, x, y) {
+            var _this = _super.call(this, game, x, y, 'block', 0) || this;
+            _this.game.physics.arcade.enableBody(_this);
+            _this.body.collideWorldBounds = true;
+            _this.body.immovable = true;
+            _this.scale.setTo(1, 1);
+            game.add.existing(_this);
+            return _this;
+        }
+        return Wall;
+    }(Phaser.Sprite));
+    MyGame.Wall = Wall;
 })(MyGame || (MyGame = {}));
 //# sourceMappingURL=game.js.map
