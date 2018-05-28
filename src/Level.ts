@@ -37,7 +37,7 @@ module MyGame {
 					}
 					
 					if(parts[i][j] == 'y') {
-						// this.parts.add(new Number(this.game, 50*j, 50*i));
+						this.parts.add(new Number(this.game, 50*j, 50*i));
 					}
 				
 				}

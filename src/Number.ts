@@ -2,15 +2,19 @@ module MyGame {
 
 	export class Number extends Phaser.Sprite {
 
+		number: Number;
+
 		constructor(game: Phaser.Game, x: number, y: number) {
-			let numb = 0.6
-			console.log(numb)
+
+
+			// let numb = 0.6
+			// console.log(numb)
 			
-			if(numb < 0.5){
+			// if(numb < 0.5){
 			super(game, x, y, 'drie', 0);
-			} else{
-			super(game, x, y, '', 0);
-			}
+			// } else{
+			// super(game, x, y, '', 0);
+			// }
 			
 
             this.game.physics.arcade.enableBody(this);

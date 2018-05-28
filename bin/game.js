@@ -68,25 +68,26 @@ var MyGame;
             this.background.scale.setTo(1.5, 1.5);
             this.parts = this.game.add.group();
             var parts = [
-                'xxxxxxxxxxxxxxxxxxxxxxxxxx',
-                'x  2       x             x',
-                'x                        x',
-                'x    x      x            x',
-                'x    x                   x',
-                'x    x                   x',
-                'x    x   5               x',
-                'x    x                   x',
-                'x    x                   x',
-                'x                        x',
-                'x                        x',
-                'x       x                x',
-                'x       x                x',
-                'xxxxxxxxxxxxxxxxxxxxxxxxxx',
+                'xxxxxxxxxxxxxxxx',
+                'x  y       x   x',
+                'x              x',
+                'x    x      x  x',
+                'x    x         x',
+                'x    x         x',
+                'x    x   y     x',
+                'x    x         x',
+                'x    x         x',
+                'x       x      x',
+                'x       x      x',
+                'xxxxxxxxxxxxxxxx',
             ];
             for (var i = 0; i < parts.length; i++) {
                 for (var j = 0; j < parts[i].length; j++) {
                     if (parts[i][j] == 'x') {
                         this.parts.add(new MyGame.Wall(this.game, 50 * j, 50 * i));
+                    }
+                    if (parts[i][j] == 'y') {
+                        this.parts.add(new MyGame.Number(this.game, 50 * j, 50 * i));
                     }
                 }
             }
@@ -142,6 +143,22 @@ var MyGame;
 })(MyGame || (MyGame = {}));
 var MyGame;
 (function (MyGame) {
+    var Number = (function (_super) {
+        __extends(Number, _super);
+        function Number(game, x, y) {
+            var _this = _super.call(this, game, x, y, 'drie', 0) || this;
+            _this.game.physics.arcade.enableBody(_this);
+            _this.body.immovable = true;
+            _this.scale.setTo(1, 1);
+            game.add.existing(_this);
+            return _this;
+        }
+        return Number;
+    }(Phaser.Sprite));
+    MyGame.Number = Number;
+})(MyGame || (MyGame = {}));
+var MyGame;
+(function (MyGame) {
     var Player = (function (_super) {
         __extends(Player, _super);
         function Player(game, x, y) {
@@ -192,6 +209,7 @@ var MyGame;
             this.load.image('logo', 'assets/logo.png');
             this.load.image('background', 'assets/background.jpg');
             this.load.spritesheet('block', 'assets/block.png', 50, 50);
+            this.load.spritesheet('drie', 'assets/drie.png', 50, 50);
             this.load.spritesheet('unicorn', 'assets/unicorn.png', 100, 100);
         };
         Preloader.prototype.create = function () {
@@ -239,6 +257,10 @@ var MyGame;
                 this.animations.frame = 0;
             }
             this.game.physics.arcade.collide(this, this.level.parts);
+            this.game.physics.arcade.overlap(this, this.level.numbers, this.grabNumber);
+        };
+        Unicorn.prototype.grabNumber = function () {
+            alert('hi');
         };
         return Unicorn;
     }(Phaser.Sprite));
