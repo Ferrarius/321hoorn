@@ -14,18 +14,20 @@ module MyGame {
 			this.parts = this.game.add.group()
 
 			let parts = [
-				'xxxxxxxxxxxxxxxx',
-				'x  2       x   x',
-				'x              x',
-				'x    x      x  x',
-				'x    x         x',
-				'x    x         x',
-				'x    x   5     x',
-				'x    x         x',
-				'x    x         x',
-				'x       x      x',
-				'x       x      x',
-				'xxxxxxxxxxxxxxxx',
+				'xxxxxxxxxxxxxxxxxxxxxxxxxx',
+				'x  2       x             x',
+				'x                        x',
+				'x    x      x            x',
+				'x    x                   x',
+				'x    x                   x',
+				'x    x   5               x',
+				'x    x                   x',
+				'x    x                   x',
+				'x                        x',
+				'x                        x',
+				'x       x                x',
+				'x       x                x',
+				'xxxxxxxxxxxxxxxxxxxxxxxxxx',
 			];
 
 			for (var i = 0; i < parts.length; i++) {

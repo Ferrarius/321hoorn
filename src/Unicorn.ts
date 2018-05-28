@@ -27,7 +27,7 @@ module MyGame {
 
 			if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
 
-				this.body.velocity.x = -150;
+				this.body.velocity.x = -300;
 				// this.animations.play('walk');
 
 				if (this.scale.x == 1) {
@@ -36,7 +36,7 @@ module MyGame {
 			}
 			else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
 
-				this.body.velocity.x = 150;
+				this.body.velocity.x = 300;
 				// this.animations.play('walk');
 
 				if (this.scale.x == -1) {
@@ -45,12 +45,12 @@ module MyGame {
 			}
 			else if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
 
-				this.body.velocity.y = -150;
+				this.body.velocity.y = -300;
 				// this.animations.play('walk');
 			}
 			else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
 
-				this.body.velocity.y = 150;
+				this.body.velocity.y = 300;
 				// this.animations.play('walk');
 			}
 			else {

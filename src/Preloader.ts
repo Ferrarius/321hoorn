@@ -18,9 +18,9 @@ module MyGame {
 
 			//	Here we load the rest of the assets our game needs.
 			//	As this is just a Project Template I've not provided these assets, swap them for your own.
-			// this.load.image('titlepage', 'assets/titlepage.jpg');
+			this.load.image('titlepage', 'assets/titlepage.jpg');
 			// this.load.audio('titleMusic', 'assets/title.mp3', true);
-			// this.load.image('logo', 'assets/logo.png');
+			this.load.image('logo', 'assets/logo.png');
             // this.load.spritesheet('simon', 'assets/simon.png', 58, 96, 5);
             // this.load.image('level1', 'assets/level1.png');
 			this.load.image('background', 'assets/background.jpg');
