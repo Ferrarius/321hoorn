@@ -24,7 +24,7 @@ var MyGame;
             }
             else {
                 this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-                this.scale.setMinMax(480, 260, 1024, 768);
+                this.scale.setMinMax(960, 420, 2048, 1536);
                 this.scale.forceLandscape = true;
                 this.scale.pageAlignHorizontally = true;
             }
@@ -44,7 +44,7 @@ var MyGame;
     var Game = (function (_super) {
         __extends(Game, _super);
         function Game() {
-            var _this = _super.call(this, 800, 600, Phaser.AUTO, 'content', null) || this;
+            var _this = _super.call(this, 1280, 700, Phaser.AUTO, 'content', null) || this;
             _this.state.add('Boot', MyGame.Boot, false);
             _this.state.add('Preloader', MyGame.Preloader, false);
             _this.state.add('MainMenu', MyGame.MainMenu, false);
@@ -68,18 +68,20 @@ var MyGame;
             this.background.scale.setTo(1.5, 1.5);
             this.parts = this.game.add.group();
             var parts = [
-                'xxxxxxxxxxxxxxxx',
-                'x  2       x   x',
-                'x              x',
-                'x    x      x  x',
-                'x    x         x',
-                'x    x         x',
-                'x    x   5     x',
-                'x    x         x',
-                'x    x         x',
-                'x       x      x',
-                'x       x      x',
-                'xxxxxxxxxxxxxxxx',
+                'xxxxxxxxxxxxxxxxxxxxxxxxxx',
+                'x  2       x             x',
+                'x                        x',
+                'x    x      x            x',
+                'x    x                   x',
+                'x    x                   x',
+                'x    x   5               x',
+                'x    x                   x',
+                'x    x                   x',
+                'x                        x',
+                'x                        x',
+                'x       x                x',
+                'x       x                x',
+                'xxxxxxxxxxxxxxxxxxxxxxxxxx',
             ];
             for (var i = 0; i < parts.length; i++) {
                 for (var j = 0; j < parts[i].length; j++) {
@@ -186,6 +188,8 @@ var MyGame;
         Preloader.prototype.preload = function () {
             this.preloadBar = this.add.sprite(300, 400, 'preloadBar');
             this.load.setPreloadSprite(this.preloadBar);
+            this.load.image('titlepage', 'assets/titlepage.jpg');
+            this.load.image('logo', 'assets/logo.png');
             this.load.image('background', 'assets/background.jpg');
             this.load.spritesheet('block', 'assets/block.png', 50, 50);
             this.load.spritesheet('unicorn', 'assets/unicorn.png', 100, 100);
@@ -214,22 +218,22 @@ var MyGame;
             this.body.velocity.x = 0;
             this.body.velocity.y = 0;
             if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-                this.body.velocity.x = -150;
+                this.body.velocity.x = -300;
                 if (this.scale.x == 1) {
                     this.scale.x = -1;
                 }
             }
             else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-                this.body.velocity.x = 150;
+                this.body.velocity.x = 300;
                 if (this.scale.x == -1) {
                     this.scale.x = 1;
                 }
             }
             else if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-                this.body.velocity.y = -150;
+                this.body.velocity.y = -300;
             }
             else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-                this.body.velocity.y = 150;
+                this.body.velocity.y = 300;
             }
             else {
                 this.animations.frame = 0;
