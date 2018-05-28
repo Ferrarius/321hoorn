@@ -6,7 +6,6 @@ module MyGame {
 		music: Phaser.Sound;
 		unicorn: MyGame.Unicorn;
 		parts: Phaser.Group;
-		numbers: Phaser.Group;
 
 		create() {
 
@@ -15,18 +14,20 @@ module MyGame {
 			this.parts = this.game.add.group()
 
 			let parts = [
-				'xxxxxxxxxxxxxxxx',
-				'x  y       x   x',
-				'x              x',
-				'x    x      x  x',
-				'x    x         x',
-				'x    x         x',
-				'x    x   y     x',
-				'x    x         x',
-				'x    x         x',
-				'x       x      x',
-				'x       x      x',
-				'xxxxxxxxxxxxxxxx',
+				'xxxxxxxxxxxxxxxxxxxxxxxxxx',
+				'x  2       x             x',
+				'x                        x',
+				'x    x      x            x',
+				'x    x                   x',
+				'x    x                   x',
+				'x    x   5               x',
+				'x    x                   x',
+				'x    x                   x',
+				'x                        x',
+				'x                        x',
+				'x       x                x',
+				'x       x                x',
+				'xxxxxxxxxxxxxxxxxxxxxxxxxx',
 			];
 
 			for (var i = 0; i < parts.length; i++) {
@@ -34,10 +35,6 @@ module MyGame {
 
 					if(parts[i][j] == 'x') {
 						this.parts.add(new Wall(this.game, 50*j, 50*i));
-					}
-					
-					if(parts[i][j] == 'y') {
-						this.parts.add(new Number(this.game, 50*j, 50*i));
 					}
 				
 				}

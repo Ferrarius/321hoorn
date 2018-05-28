@@ -25,7 +25,6 @@ module MyGame {
             // this.load.image('level1', 'assets/level1.png');
 			this.load.image('background', 'assets/background.jpg');
 			this.load.spritesheet('block', 'assets/block.png', 50, 50);
-			this.load.spritesheet('drie', 'assets/drie.png', 50, 50);
             this.load.spritesheet('unicorn', 'assets/unicorn.png', 100, 100);
 			//	+ lots of other required assets here
 

@@ -57,12 +57,7 @@ module MyGame {
 				this.animations.frame = 0;
             }
             
-			this.game.physics.arcade.collide(this, this.level.parts);
-			this.game.physics.arcade.overlap(this, this.level.numbers, this.grabNumber);
-		}
-
-		public grabNumber() {
-			alert('hi');
+            this.game.physics.arcade.collide(this, this.level.parts);
 		}
 
 	}
