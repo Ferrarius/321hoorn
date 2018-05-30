@@ -67,18 +67,20 @@ var MyGame;
             this.background = this.add.sprite(0, 0, 'background');
             this.background.scale.setTo(1.5, 1.5);
             this.parts = this.game.add.group();
+            this.numbers = this.game.add.group();
+            this.sum = new MyGame.Sum(this.game, 1100, 10, 4, 4);
             var parts = [
                 'xxxxxxxxxxxxxxxxxxxxxxxxxx',
-                'x  2       x             x',
+                'x  y       x             x',
                 'x                        x',
-                'x    x      x            x',
+                'x    x      x        z   x',
                 'x    x                   x',
                 'x    x                   x',
-                'x    x   5               x',
+                'x    x   y               x',
                 'x    x                   x',
                 'x    x                   x',
                 'x                        x',
-                'x                        x',
+                'x              y         x',
                 'x       x                x',
                 'x       x                x',
                 'xxxxxxxxxxxxxxxxxxxxxxxxxx',
@@ -88,10 +90,30 @@ var MyGame;
                     if (parts[i][j] == 'x') {
                         this.parts.add(new MyGame.Wall(this.game, 50 * j, 50 * i));
                     }
+                    if (parts[i][j] == 'y') {
+                        this.numbers.add(new MyGame.Number(this.game, 50 * j, 50 * i, Math.floor(Math.random() * 100)));
+                    }
+                    if (parts[i][j] == 'z') {
+                        this.numbers.add(new MyGame.Number(this.game, 50 * j, 50 * i, this.sum.answer));
+                    }
                 }
             }
             this.unicorn = new MyGame.Unicorn(this.game, this, 130, 284);
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
+        };
+        Level.prototype.numberOverlap = function (unicorn, number) {
+            console.log(number.number);
+            console.log(this.level.sum.sum);
+            if (number.number == this.level.sum.answer) {
+                alert('correct');
+            }
+            else {
+                alert('wrong');
+            }
+            number.kill();
+        };
+        Level.prototype.nextLevel = function () {
+            this.game.state.start('Level', true, false);
         };
         return Level;
     }(Phaser.State));
@@ -139,6 +161,24 @@ var MyGame;
         return MainMenu;
     }(Phaser.State));
     MyGame.MainMenu = MainMenu;
+})(MyGame || (MyGame = {}));
+var MyGame;
+(function (MyGame) {
+    var Number = (function (_super) {
+        __extends(Number, _super);
+        function Number(game, x, y, number) {
+            var _this = _super.call(this, game, x, y, number) || this;
+            _this.number = number;
+            _this.game.physics.arcade.enableBody(_this);
+            _this.body.collideWorldBounds = true;
+            _this.body.immovable = true;
+            _this.scale.setTo(1, 1);
+            game.add.existing(_this);
+            return _this;
+        }
+        return Number;
+    }(Phaser.Text));
+    MyGame.Number = Number;
 })(MyGame || (MyGame = {}));
 var MyGame;
 (function (MyGame) {
@@ -203,6 +243,27 @@ var MyGame;
 })(MyGame || (MyGame = {}));
 var MyGame;
 (function (MyGame) {
+    var Sum = (function (_super) {
+        __extends(Sum, _super);
+        function Sum(game, x, y, firstNumber, secondNumber) {
+            var _this = this;
+            var sum = firstNumber + ' x ' + secondNumber + ' = ?';
+            _this = _super.call(this, game, x, y, sum, { fill: 'white' }) || this;
+            _this.sum = sum;
+            _this.answer = firstNumber * secondNumber;
+            _this.game.physics.arcade.enableBody(_this);
+            _this.body.collideWorldBounds = true;
+            _this.body.immovable = true;
+            _this.scale.setTo(1, 1);
+            game.add.existing(_this);
+            return _this;
+        }
+        return Sum;
+    }(Phaser.Text));
+    MyGame.Sum = Sum;
+})(MyGame || (MyGame = {}));
+var MyGame;
+(function (MyGame) {
     var Unicorn = (function (_super) {
         __extends(Unicorn, _super);
         function Unicorn(game, level, x, y) {
@@ -239,6 +300,7 @@ var MyGame;
                 this.animations.frame = 0;
             }
             this.game.physics.arcade.collide(this, this.level.parts);
+            this.game.physics.arcade.overlap(this, this.level.numbers, this.level.numberOverlap, null, this);
         };
         return Unicorn;
     }(Phaser.Sprite));

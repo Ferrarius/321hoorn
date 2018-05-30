@@ -58,6 +58,7 @@ module MyGame {
             }
             
             this.game.physics.arcade.collide(this, this.level.parts);
+			this.game.physics.arcade.overlap(this, this.level.numbers, this.level.numberOverlap, null, this);
 		}
 
 	}
