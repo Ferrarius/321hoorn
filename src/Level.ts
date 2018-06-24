@@ -8,6 +8,7 @@ module MyGame {
 		parts: Phaser.Group;
 		numbers: Phaser.Group;
 		sum: MyGame.Sum;
+		level: this;
 
 		create() {
 
@@ -15,19 +16,19 @@ module MyGame {
 			this.background.scale.setTo(1.5,1.5);
 			this.parts = this.game.add.group();
 			this.numbers = this.game.add.group();
-			this.sum = new Sum(this.game, 1100, 10, 4, 4);
+			this.sum = new Sum(this.game, 1100, 10, Math.floor(Math.random() * 10), Math.floor(Math.random() * 10));
 
 			let parts = [
 				'xxxxxxxxxxxxxxxxxxxxxxxxxx',
-				'x  y       x             x',
-				'x                        x',
-				'x    x      x        z   x',
-				'x    x                   x',
-				'x    x                   x',
-				'x    x   y               x',
-				'x    x                   x',
-				'x    x                   x',
-				'x                        x',
+				'x  y       x        x    x',
+				'x                   x    x',
+				'x    x      x       x    x',
+				'x    x              x    x',
+				'x    x              x    x',
+				'x    x   y          x    x',
+				'x    x        xxxxxxx    x',
+				'x    x              x    x',
+				'x                   x    x',
 				'x              y         x',
 				'x       x                x',
 				'x       x                x',
@@ -39,16 +40,21 @@ module MyGame {
 
                     if(parts[i][j] == 'x') {
                         this.parts.add(new Wall(this.game, 50*j, 50*i));
-                    }
-                    if(parts[i][j] == 'y') {
+                    } else if(parts[i][j] == 'y') {
                         this.numbers.add(new Number(this.game, 50*j, 50*i, Math.floor(Math.random() * 100)));
                     }
-                    if(parts[i][j] == 'z') {
-                        this.numbers.add(new Number(this.game, 50*j, 50*i, this.sum.answer));
-                    }
+
+                    // if(parts[i][j] == 'z') {
+                    //     this.numbers.add(new Number(this.game, 50*j, 50*i, this.sum.answer));
+                    // }
 				
 				}
 			}
+
+			let x = 50*Math.floor(Math.random() * parts[0].length);
+			let y = 50*Math.floor(Math.random() * parts.length);
+
+			this.numbers.add(new Number(this.game, x, y, this.sum.answer));
 
 			this.unicorn = new Unicorn(this.game, this, 130, 284);
 
@@ -63,19 +69,14 @@ module MyGame {
 
 		numberOverlap(unicorn: MyGame.Unicorn, number: MyGame.Number) {
 
-			console.log(number.number);
-			console.log(this.level.sum.sum);
-
 			if(number.number == this.level.sum.answer) {
-				alert('correct');
-				// this.nextLevel;
+                this.level.sum.showAnswer();
 			} else {
-				alert('wrong');
+
 			}
 
 			number.kill();
 			// alert(number.number);
-
 		}
 
 		nextLevel() {

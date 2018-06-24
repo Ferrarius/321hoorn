@@ -67,18 +67,20 @@ var MyGame;
             this.background = this.add.sprite(0, 0, 'background');
             this.background.scale.setTo(1.5, 1.5);
             this.parts = this.game.add.group();
+            this.numbers = this.game.add.group();
+            this.sum = new MyGame.Sum(this.game, 1100, 10, Math.floor(Math.random() * 10), Math.floor(Math.random() * 10));
             var parts = [
                 'xxxxxxxxxxxxxxxxxxxxxxxxxx',
-                'x  2       x             x',
-                'x                        x',
-                'x    x      x            x',
-                'x    x                   x',
-                'x    x                   x',
-                'x    x   5               x',
-                'x    x                   x',
-                'x    x                   x',
-                'x                        x',
-                'x                        x',
+                'x  y       x        x    x',
+                'x                   x    x',
+                'x    x      x       x    x',
+                'x    x              x    x',
+                'x    x              x    x',
+                'x    x   y          x    x',
+                'x    x        xxxxxxx    x',
+                'x    x              x    x',
+                'x                   x    x',
+                'x              y         x',
                 'x       x                x',
                 'x       x                x',
                 'xxxxxxxxxxxxxxxxxxxxxxxxxx',
@@ -88,10 +90,27 @@ var MyGame;
                     if (parts[i][j] == 'x') {
                         this.parts.add(new MyGame.Wall(this.game, 50 * j, 50 * i));
                     }
+                    else if (parts[i][j] == 'y') {
+                        this.numbers.add(new MyGame.Number(this.game, 50 * j, 50 * i, Math.floor(Math.random() * 100)));
+                    }
                 }
             }
+            var x = 50 * Math.floor(Math.random() * parts[0].length);
+            var y = 50 * Math.floor(Math.random() * parts.length);
+            this.numbers.add(new MyGame.Number(this.game, x, y, this.sum.answer));
             this.unicorn = new MyGame.Unicorn(this.game, this, 130, 284);
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
+        };
+        Level.prototype.numberOverlap = function (unicorn, number) {
+            if (number.number == this.level.sum.answer) {
+                this.level.sum.showAnswer();
+            }
+            else {
+            }
+            number.kill();
+        };
+        Level.prototype.nextLevel = function () {
+            this.game.state.start('Level', true, false);
         };
         return Level;
     }(Phaser.State));
@@ -144,16 +163,20 @@ var MyGame;
 (function (MyGame) {
     var Number = (function (_super) {
         __extends(Number, _super);
-        function Number(game, x, y) {
-            var _this = _super.call(this, game, x, y, 'drie', 0) || this;
+        function Number(game, x, y, number) {
+            var _this = this;
+            game.add.sprite(x, y, 'number');
+            _this = _super.call(this, game, x, y, number.toString()) || this;
+            _this.number = number;
             _this.game.physics.arcade.enableBody(_this);
+            _this.body.collideWorldBounds = true;
             _this.body.immovable = true;
             _this.scale.setTo(1, 1);
             game.add.existing(_this);
             return _this;
         }
         return Number;
-    }(Phaser.Sprite));
+    }(Phaser.Text));
     MyGame.Number = Number;
 })(MyGame || (MyGame = {}));
 var MyGame;
@@ -208,6 +231,7 @@ var MyGame;
             this.load.image('logo', 'assets/logo.png');
             this.load.image('background', 'assets/background.jpg');
             this.load.spritesheet('block', 'assets/block.png', 50, 50);
+            this.load.spritesheet('number', 'assets/number.png', 50, 50);
             this.load.spritesheet('unicorn', 'assets/unicorn.png', 100, 100);
         };
         Preloader.prototype.create = function () {
@@ -216,6 +240,30 @@ var MyGame;
         return Preloader;
     }(Phaser.State));
     MyGame.Preloader = Preloader;
+})(MyGame || (MyGame = {}));
+var MyGame;
+(function (MyGame) {
+    var Sum = (function (_super) {
+        __extends(Sum, _super);
+        function Sum(game, x, y, firstNumber, secondNumber) {
+            var _this = this;
+            var sum = firstNumber + ' x ' + secondNumber + ' = ';
+            _this = _super.call(this, game, x, y, sum, { fill: 'white' }) || this;
+            _this.sum = sum;
+            _this.answer = firstNumber * secondNumber;
+            _this.game.physics.arcade.enableBody(_this);
+            _this.body.collideWorldBounds = true;
+            _this.body.immovable = true;
+            _this.scale.setTo(1, 1);
+            game.add.existing(_this);
+            return _this;
+        }
+        Sum.prototype.showAnswer = function () {
+            this.setText(this.sum + this.answer);
+        };
+        return Sum;
+    }(Phaser.Text));
+    MyGame.Sum = Sum;
 })(MyGame || (MyGame = {}));
 var MyGame;
 (function (MyGame) {
@@ -255,6 +303,7 @@ var MyGame;
                 this.animations.frame = 0;
             }
             this.game.physics.arcade.collide(this, this.level.parts);
+            this.game.physics.arcade.overlap(this, this.level.numbers, this.level.numberOverlap, null, this);
         };
         return Unicorn;
     }(Phaser.Sprite));

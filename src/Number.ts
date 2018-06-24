@@ -6,7 +6,9 @@ module MyGame {
 
 		constructor(game: Phaser.Game, x: number, y: number, number: number) {
 
-			super(game, x, y, number);
+			game.add.sprite(x, y, 'number');
+
+			super(game, x, y, number.toString());
             this.number = number;
 
 			// let numb = 0.6
