@@ -9,7 +9,7 @@ module MyGame {
 
         constructor(game: Phaser.Game, x: number, y: number, firstNumber: number, secondNumber: number) {
 
-            let sum = firstNumber+' x '+secondNumber+' = ?';
+            let sum = firstNumber+' x '+secondNumber+' = ';
             super(game, x, y, sum, { fill: 'white' });
             this.sum = sum;
             this.answer = firstNumber * secondNumber;
@@ -19,10 +19,9 @@ module MyGame {
 
             // if(numb < 0.5){
             // super(game, x, y, '', 0);
-            // } else{
+            // } else {
             // super(game, x, y, '', 0);
             // }
-
 
             this.game.physics.arcade.enableBody(this);
             this.body.collideWorldBounds = true;
@@ -37,6 +36,9 @@ module MyGame {
 
         }
 
+        showAnswer() {
+            this.setText(this.sum+this.answer);
+        }
     }
 
 }
